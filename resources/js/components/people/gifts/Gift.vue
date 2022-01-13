@@ -2,6 +2,9 @@
   .photo {
     height: 200px;
   }
+  .gift-date{
+    float: right;
+  }
 </style>
 
 <template>
@@ -13,6 +16,7 @@
         </a>
         <strong v-else>{{ gift.name }}</strong>
       </span>
+      <span v-if="gift.date" class="f7 gift-date">{{ formatDate(gift.date) }}</span>
 
       <span v-if="gift.recipient && gift.recipient.complete_name">
         <span class="black-50 mr1 ml1">
@@ -90,7 +94,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
   },
 
@@ -99,6 +103,16 @@ export default {
     modalPhoto(photo) {
       this.url = photo.link;
       this.$refs.modalPhoto.open();
+    },
+
+    formatDate(dateAsString) {
+      const moment = require('moment-timezone');
+      moment.locale(this._i18n.locale);
+      moment.tz.setDefault('UTC');
+
+      var date = moment.tz(moment(dateAsString), this.$root.timezone);
+
+      return date.format('LL');
     },
 
   }

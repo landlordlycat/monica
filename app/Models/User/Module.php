@@ -26,6 +26,7 @@ class Module extends Model
      */
     protected $casts = [
         'active' => 'boolean',
+        'delible' => 'boolean',
     ];
 
     /**
@@ -41,7 +42,7 @@ class Module extends Model
     /**
      * Scope a query to only include modules that are active.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)

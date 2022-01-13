@@ -25,7 +25,7 @@ class NotesController extends Controller
                 'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
                 'favorited_at' => $note->favorited_at,
-                'favorited_at_short' => DateHelper::getShortDate($note->favorited_at),
+                'favorited_at_short' => $note->favorited_at ? DateHelper::getShortDate($note->favorited_at) : null,
                 'created_at' => $note->created_at,
                 'created_at_short' => DateHelper::getShortDate($note->created_at),
                 'edit' => false,
@@ -41,6 +41,8 @@ class NotesController extends Controller
      */
     public function store(NotesRequest $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         return $contact->notes()->create([
             'account_id' => auth()->user()->account_id,
             'body' => $request->input('body'),
@@ -64,14 +66,15 @@ class NotesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param NotesRequest $request
-     * @param Contact $contact
-     * @param Note $note
-     *
+     * @param  NotesRequest  $request
+     * @param  Contact  $contact
+     * @param  Note  $note
      * @return Note
      */
     public function update(NotesRequest $request, Contact $contact, Note $note): Note
     {
+        $contact->throwInactive();
+
         $note->update(
             $request->only([
                 'body',
@@ -85,13 +88,14 @@ class NotesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
-     * @param Note $note
-     *
+     * @param  Contact  $contact
+     * @param  Note  $note
      * @return void
      */
     public function destroy(Contact $contact, Note $note): void
     {
+        $contact->throwInactive();
+
         $note->delete();
     }
 }

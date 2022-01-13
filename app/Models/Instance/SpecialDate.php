@@ -2,8 +2,9 @@
 
 namespace App\Models\Instance;
 
-use Carbon\Carbon;
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class SpecialDate extends Model
 {
+    use HasUuid;
+
     /**
      * The table associated with the model.
      *
@@ -128,12 +131,13 @@ class SpecialDate extends Model
 
     /**
      * Create a SpecialDate from an age.
-     * @param  int $age
+     *
+     * @param  int  $age
      */
     public function createFromAge(int $age)
     {
         $this->is_age_based = true;
-        $this->date = now()->subYears($age)->month(1)->day(1);
+        $this->date = now(DateHelper::getTimezone())->subYears($age)->month(1)->day(1);
         $this->save();
 
         return $this;
@@ -141,9 +145,10 @@ class SpecialDate extends Model
 
     /**
      * Create a SpecialDate from an actual date, that might not contain a year.
-     * @param  int    $year
-     * @param  int    $month
-     * @param  int    $day
+     *
+     * @param  int  $year
+     * @param  int  $month
+     * @param  int  $day
      */
     public function createFromDate(int $year, int $month, int $day)
     {
@@ -164,7 +169,8 @@ class SpecialDate extends Model
 
     /**
      * Associates a special date to a contact.
-     * @param Contact $contact
+     *
+     * @param  Contact  $contact
      */
     public function setToContact(Contact $contact)
     {

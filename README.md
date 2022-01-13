@@ -7,11 +7,12 @@
 
 <div align="center">
 
-[![Build Status](https://img.shields.io/azure-devops/build/monicahq/monica/monica%20CI/master)](https://dev.azure.com/monicahq/monica)
+[![Build Status](https://img.shields.io/github/workflow/status/monicahq/monica/Build?style=flat-square&label=Build%20Status)](https://github.com/monicahq/monica/actions)
 [![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
 ![Lines of code](https://img.shields.io/tokei/lines/github/monicahq/monica)
-[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
-[![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/master/LICENSE)
+[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&label=Coverage%20Status)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
+[![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/master/LICENSE.md)
+
 
 </div>
 
@@ -127,12 +128,14 @@ There are multiple ways of getting started with Monica:
 
 ### Requirements
 
-If you want to host it yourself, you need
+If you want to host Monica yourself, you will need a server with:
 
-- PHP 7.4+ or newer
+- PHP 7.4 or newer
 - HTTP server with PHP support (eg: Apache, Nginx, Caddy)
 - Composer
 - MySQL
+
+To successfully build and host Monica, we recommend a system with at least 1.5&thinsp;GB for RAM.  Monica can run on systems with significantly less memory, but due to the high memory requirements of the build process during updates, you may encounter issues and failed builds.
 
 ### Update your instance
 
@@ -304,6 +307,6 @@ Monica uses a lot of open source projects and we thank them with all our hearts.
 
 ## License
 
-Copyright (c) 2016–2021
+Copyright © 2016–2022
 
-Licensed under [the AGPL License](/LICENSE).
+Licensed under [the AGPL License](/LICENSE.md).

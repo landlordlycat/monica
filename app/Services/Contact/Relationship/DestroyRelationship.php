@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
+use App\Services\Contact\Contact\DestroyContact;
 
 class DestroyRelationship extends BaseService
 {
@@ -25,7 +26,7 @@ class DestroyRelationship extends BaseService
     /**
      * Destroy a relationship.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -34,6 +35,8 @@ class DestroyRelationship extends BaseService
 
         $relationship = Relationship::where('account_id', $data['account_id'])
                                     ->findOrFail($data['relationship_id']);
+
+        $relationship->contactIs->throwInactive();
 
         $otherContact = $relationship->ofContact;
 
@@ -47,7 +50,7 @@ class DestroyRelationship extends BaseService
     /**
      * Delete relationship.
      *
-     * @param Relationship $relationship
+     * @param  Relationship  $relationship
      */
     private function deleteRelationship(Relationship $relationship)
     {
@@ -62,7 +65,7 @@ class DestroyRelationship extends BaseService
     /**
      * Delete partial contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      */
     private function deletePartialContact(Contact $contact)
     {
@@ -77,7 +80,10 @@ class DestroyRelationship extends BaseService
                 ->count();
 
             if ($otherRelations == 0) {
-                $contact->delete();
+                DestroyContact::dispatch([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                ]);
             }
         }
     }

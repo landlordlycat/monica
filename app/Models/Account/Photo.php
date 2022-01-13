@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
@@ -13,6 +14,8 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class Photo extends Model
 {
+    use HasUuid;
+
     /**
      * The table associated with the model.
      *
@@ -64,9 +67,11 @@ class Photo extends Model
      */
     public function url()
     {
-        $url = $this->new_filename;
+        if (config('filesystems.default_visibility') === 'public') {
+            return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
+        }
 
-        return asset(StorageHelper::disk(config('filesystems.default'))->url($url));
+        return route('storage', ['file' => $this->new_filename]);
     }
 
     /**
@@ -78,11 +83,28 @@ class Photo extends Model
     {
         try {
             $url = $this->new_filename;
-            $file = Storage::disk(config('filesystems.default'))->get($url);
+            $file = StorageHelper::disk(config('filesystems.default'))->get($url);
 
             return (string) Image::make($file)->encode('data-url');
         } catch (FileNotFoundException $e) {
             return null;
         }
+    }
+
+    /**
+     * Delete the model from the database.
+     *
+     * @return bool|null
+     */
+    public function delete()
+    {
+        try {
+            Storage::disk(config('filesystems.default'))
+                ->delete($this->new_filename);
+        } catch (FileNotFoundException $e) {
+            // continue
+        }
+
+        return parent::delete();
     }
 }

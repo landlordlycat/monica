@@ -13,7 +13,7 @@ class RelationshipShort extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -21,6 +21,7 @@ class RelationshipShort extends JsonResource
         return [
             'relationship' => [
                 'id' => $this->id,
+                'uuid' => $this->uuid,
                 'name' => $this->relationshipType->name,
             ],
             'contact' => new ContactShortResource($this->ofContact),

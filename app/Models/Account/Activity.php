@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Contact\Contact;
@@ -18,7 +19,7 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
  */
 class Activity extends Model implements IsJournalableInterface
 {
-    use Journalable;
+    use Journalable, HasUuid;
 
     /**
      * The table associated with the model.
@@ -137,6 +138,7 @@ class Activity extends Model implements IsJournalableInterface
 
     /**
      * Gets the information about the activity for the journal.
+     *
      * @return array
      */
     public function getInfoForJournalEntry()

@@ -39,6 +39,15 @@ class AuditLog extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'should_appear_on_dashboard' => 'boolean',
+    ];
+
+    /**
      * Get the Account record associated with the audit log.
      *
      * @return BelongsTo
@@ -71,8 +80,8 @@ class AuditLog extends Model
     /**
      * Get the JSON object.
      *
+     * @param  mixed  $value
      * @return array
-     * @param mixed $value
      */
     public function getObjectAttribute($value)
     {
